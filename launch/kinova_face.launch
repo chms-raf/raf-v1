@@ -1,0 +1,19 @@
+<launch>
+
+    <!-- Robot Namespace -->
+    <arg name="robot_name"  default="my_gen3"/>
+    <arg name="start_delay_seconds" default="0"/>
+
+    <arg name="view_cam" default="true"/>
+
+    <node name="face_pbvs" pkg="odhe_ros" type="face_pbvs" output="screen" launch-prefix="bash -c 'sleep $(arg start_delay_seconds); $0 $@' ">
+        <param name="robot_name" value="$(arg robot_name)"/>
+    </node>
+
+    <group if="$(arg view_cam)">
+        <node name="robot_cam_view" pkg="image_view" type="image_view" respawn="false" output="screen">
+            <remap from="image" to="/face_detections"/>
+        </node>
+    </group>
+    
+</launch>

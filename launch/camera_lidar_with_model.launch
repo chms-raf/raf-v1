@@ -1,0 +1,91 @@
+<launch>
+
+    <!-- Specify if you want to view node outputs-->
+    <arg name="view_tag_detections" default="False"/> 
+    <arg name="view_rviz" default="True"/> 
+
+    <!-- Launch Lidar camera-->
+    <group ns="camera">
+        <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
+            <arg name="serial_no"             value="f0140143"/>
+            <arg name="json_file_path"        value="/home/labuser/L515 settings.json"/>
+            <arg name="depth_width"           value="1024"/>
+            <arg name="depth_height"          value="768"/>
+            <arg name="confidence_width"      value="1024"/>
+            <arg name="confidence_height"     value="768"/>
+            <arg name="infra_width"           value="1024"/>
+            <arg name="infra_height"          value="768"/>
+            <arg name="align_depth"           value="True"/>
+            <arg name="initial_reset"         value="True"/>
+            <arg name="enable_pointcloud"     value="True"/>
+        </include>
+    </group>
+
+    <!--Use this section to visualize the Depth Camera Image Stream-->
+    <group if="$(eval view_tag_detections)">
+        <node name="view_rgb_image" pkg="image_view" type="image_view" respawn="false" output="screen">
+            <remap from="image" to="/tag_detections_image" />
+        </node>
+    </group>
+
+    <!-- Loads the camera model -->
+    <!-- I don't think I can visualize both the camera model and Baxter model at the same time -->
+    <!-- Update: might be possible if namespaces are separate -->
+    <!-- Maybe also could modify Baxter's URDF to include camera URDF, however, they can move relative to each other... -->
+    <!-- <param name="robot_description" command="$(find xacro)/xacro '$(find realsense2_description)/urdf/test_l515_camera.urdf.xacro' use_nominal_extrinsics:=false"/> -->
+
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+    <!-- Load rviz config file -->
+    <group if="$(eval view_rviz)">
+        <node name="rviz" pkg="rviz" type="rviz" args="-d $(find odhe_ros)/test.rviz" required="true"/>
+        <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find realsense2_description)/rviz/urdf.rviz" required="true"/> -->
+    </group>
+    
+    <!-- Launch Baxter Stuff -->
+    <!-- Do line 44 instead of lines 46-66 -->
+    <!-- <include file="$(find baxter_moveit_config)/launch/baxter_grippers.launch"/> -->
+
+    <!-- By default we do not overwrite the URDF. Change the following to true to change the default behavior -->
+    <arg name="load_robot_description" default="false"/>
+
+    <!-- Left and right electric gripper params. Set to true to check for collisions for their links -->
+    <arg name="right_electric_gripper" default="false"/>
+    <arg name="left_electric_gripper" default="true"/>
+
+    <!-- Set the kinematic tips for the left_arm and right_arm move_groups -->
+    <arg name="left_tip_name" default="left_gripper"/>
+    <arg name="right_tip_name" default="right_gripper"/>
+    <include file="$(find baxter_moveit_config)/launch/planning_context.launch">
+        <arg name="load_robot_description" value="$(arg load_robot_description)"/>
+        <arg name="left_electric_gripper" value="$(arg left_electric_gripper)"/>
+        <arg name="right_electric_gripper" value="$(arg right_electric_gripper)"/>
+        <arg name="left_tip_name" value="$(arg left_tip_name)"/>
+        <arg name="right_tip_name" value="$(arg right_tip_name)"/>
+    </include>
+
+    <include file="$(find baxter_moveit_config)/launch/move_group.launch">
+        <arg name="allow_trajectory_execution" value="true"/>
+    </include>
+
+    <!-- Baxter provided utility -->
+    <node name="joint_trajectory_action_server" pkg="baxter_interface" type="joint_trajectory_action_server.py" output="screen" />
+
+    <!-- Remap appropriate Baxter joint topics -->
+    <node name="remap" pkg="topic_tools" type="relay" args="robot/joint_states joint_states"/>
+
+    <!-- Run tag detection -->
+    <include file="$(find apriltag2_ros)/launch/continuous_detection.launch">
+        <arg name="camera_name"             value="/camera/color"/>
+        <arg name="image_topic"             value="image_raw"/>
+    </include>
+    <!-- <node name="tag_detection" pkg="odhe_ros" type="tag_detection.py" output="screen"/> -->
+
+    <!-- Create static transform between camera and robot -->
+    <!-- Run this first to use camera in world frame -->
+    <!-- <node pkg="tf" type="static_transform_publisher" name="robot2camera" args="0.60740592 0.77209861 0.45919051 -0.3379876 0.72450692 0.23068741 0.55465072 /world /_link 100" /> -->
+
+    <!-- Run this second to use camera in gripper frame -->
+    <node pkg="tf" type="static_transform_publisher" name="camera2gripper" args=" -0.11112789 0.0024832 -0.16221551 0.02084703 -0.53472294 0.01070475 0.84470242 /left_gripper /_link 100" />
+
+</launch>
