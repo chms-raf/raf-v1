@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Robot-Assisted Feeding - ODHE ROS Package
 
 This is the ros package for the ODHE Grant Funded Project
@@ -151,7 +150,3 @@ Test code that draws GUI info for food item detection. This got integrated into 
 raf_visualize_grasp.py   
 ```
 Nice visualization for the position and orientation of food item.
-=======
-# raf-v1
-This repository houses all code related to the first robot-assisted feeding prototype system, including a pilot study evaluating its effectiveness by people with spinal cord injuries.
->>>>>>> ac4ef9eba1ea7f7d4a77f8b319b5d73cfe5fb208
