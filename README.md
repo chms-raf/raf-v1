@@ -1,12 +1,6 @@
-# Robot-Assisted Feeding - ODHE ROS Package
+# Robot-Assisted Feeding - raf-v2
 
-This is the ros package for the ODHE Grant Funded Project
-Robot-Assisted Feeding (RAF) for Individuals with Spinal Cord Injury
-
-This ros workspace has been used to develop the whole project,
-so different iterations of the project require different program files.
-
-This repo is not intended to be cloned into a ros workspace and be useful right away. In the future, I will upload a cleaned and maintained repo for this purpose.
+This repository houses all code related to the first robot-assisted feeding prototype system using the Baxter robot.
 
 ## Head-Mounted System
 The first iteration of the project used the iSCAN etl-600 wearable
@@ -22,35 +16,6 @@ the cup.
 <img src="https://github.com/jschultz299/odhe_ros/blob/main/images/IMG_7340.png" width=40%>
 
 <img src="https://github.com/jschultz299/odhe_ros/blob/main/images/Object%20Detection%20Example.gif" width=50%>
-
-I actually don't think this demonstration will work in this 
-workspace because the launch file is in a different workspace. Originally, 
-we were using Ubuntu 18.04 because we couldn't get Baxter to work with ROS 
-Noetic and Python3. Then, I put in the effort to convert Baxter's code to 
-Python3 and I switched to Ubuntu 20.04. The workspace did not get 
-transferred over, but some of the files did. Below are some of the files 
-associated with this project iteration.
-
-### Scripts:
-```bash
-cup_demo.py
-```
-The main file for the cup demo. Handles all code logic, particularly the robot's motion.
-
-```bash
-cup_demo_short.py   
-```
-I think this version was supposed to only perform one reach, or some other shortened version for demonstration purposes. It looks very similar to the code above, however.
-
-```bash
-record_data.py
-```
-Records the iSCAN information and robot data.
-
-```bash
-serial_read.py  
-```
-Reads the serial data from the iSCAN.
 
 ## Tablet Interface System
 The second iteration of this project got rid of the head-mounted eye 
