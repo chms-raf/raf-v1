@@ -1,4 +1,4 @@
-# Robot-Assisted Feeding - raf-v2
+# Prototype Robotic Assistance Platform for Self-Feeding
 
 This repository houses all code related to the first robot-assisted feeding prototype system using the Baxter robot.
 
