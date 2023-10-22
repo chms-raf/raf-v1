@@ -1,39 +1,8 @@
-# Prototype Robotic Assistance Platform for Self-Feeding
+# Development and Evaluation of a Prototype Robotic Assistance Platform for Self-Feeding
 
-This repository houses all code related to the first robot-assisted feeding prototype system using the Baxter robot.
+The ability to prepare a meal and feed oneself is one of the highest priority tasks for people with reduced arm and hand function. In this work, we present a prototype robot-assisted feeding system for people who have difficulty feeding themselves. 
 
-## Head-Mounted System
-The first iteration of the project used the iSCAN etl-600 wearable
-eye tracker. We used a faster-RCNN object detection network to detect cups, 
-bowls, plates, forks, and spoons. The network used the iSCAN's head-mounted 
-camera as the input. To demo the system, we placed a cup in
-the scene. The user then directs their gaze to the cup. When they are 
-ready, the user issues a voice command such as "grab the cup". Baxter then 
-picks up the cup that the user was looking at and delivers it to in front 
-of the user's mouth. They then move their body to sip through a straw in 
-the cup. 
-
-<img src="https://github.com/jschultz299/odhe_ros/blob/main/images/IMG_7340.png" width=40%>
-
-<img src="https://github.com/jschultz299/odhe_ros/blob/main/images/Object%20Detection%20Example.gif" width=50%>
-
-## Tablet Interface System
-The second iteration of this project got rid of the head-mounted eye 
-tracker. Also, we decided to interact with different food items on a 
-plate, instead of dishes and utensils. For the interface, we used a 
-tablet monitor with a Tobii Eye tracker 4 mounted on the bottom. We 
-detected objects using a mask-RCNN object detection network from 
-detectron2. The network used an Intel L515 LIDAR depth camera as the 
-input. The plane of the table was defined using an AprilTag fiducial 
-marker. We used Talon to interface with the eyetracker. Talon also 
-has the ability to allow the user to issue commands. The depth camera is 
-mounted to Baxter's wrist. The camera videos food items on a plate, and 
-the image is sent to the tablet with food item outlines drawn. The person 
-uses their eye movements to direct a cursor to a food item. After a short 
-dwell time, the food item is selected. Baxter picks up the food item and 
-then turns to video the user's face. We used the face-alignment ROS 
-package for facial keypoint detection. When the user open's their mouth, 
-Baxter approaches the user's face and releases the food item. 
+## Overview
 
 Check out a demo video [here](https://youtu.be/AmBzfEcXVCc)!
 
