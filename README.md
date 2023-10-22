@@ -4,9 +4,6 @@ The ability to prepare a meal and feed oneself is one of the highest priority ta
 
 ## Overview
 
-[![](https://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](https://youtu.be/AmBzfEcXVCc)
-
-
 Check out a demo video [here](https://youtu.be/AmBzfEcXVCc)!
 
 <img src="https://github.com/jschultz299/odhe_ros/blob/main/images/System%20Overview.png" width=50%>
